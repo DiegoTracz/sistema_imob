@@ -1,47 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Metronic Vue and Laravel Starterkit</title>
-    <link rel="icon" href="./favicon.ico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700">
-    <link rel="stylesheet" href="./splash-screen.css">
+        <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    @vite("resources/css/app.css")
-</head>
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-<body class="page-loading">
-<!--begin::Theme mode setup on page load-->
-<script>
-    if (document.documentElement) {
-        var defaultThemeMode = "system";
-
-        var name = document.body.getAttribute("data-kt-name");
-        var themeMode = localStorage.getItem("kt_" + (name ? name + "_" : "") + "theme_mode_value");
-
-        if (themeMode === null) {
-            if (defaultThemeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            } else {
-                themeMode = defaultThemeMode;
-            }
-        }
-        document.documentElement.setAttribute("data-theme", themeMode);
-    }
-</script>
-<!--end::Theme mode setup on page load-->
-
-
-<div id="app"></div>
-<!--begin::Loading markup-->
-<div class="splash-screen">
-    <img src="./media/logos/default-small.svg" alt="Metronic logo" />
-    <span>Loading ...</span>
-</div>
-<!--end::Loading markup-->
-
-@vite("resources/ts/app.ts")
-</body>
+        <!-- Scripts -->
+        @routes
+        @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
+        @inertiaHead
+    </head>
+    <body class="font-sans antialiased">
+        @inertia
+    </body>
 </html>
