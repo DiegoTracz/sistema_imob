@@ -1,13 +1,15 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+// import Checkbox from '@/Components/Checkbox.vue';
+// import InputError from '@/Components/InputError.vue';
+// import InputLabel from '@/Components/InputLabel.vue';
+// import PrimaryButton from '@/Components/PrimaryButton.vue';
+// import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import AuthLayout from '@metronic/layouts/AuthLayout.vue';
+import SignIn from '@metronic/views/crafted/authentication/basic-flow/SignIn.vue';
+import App from '@metronic/App.vue';
 
-defineProps({
+const props = defineProps({
     canResetPassword: {
         type: Boolean,
     },
@@ -22,79 +24,114 @@ const form = useForm({
     remember: false,
 });
 
-const submit = () => {
+const submit = (user, password) => {
+    form.email = user;
+    form.password = password;
+
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
     });
 };
+
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Log in" />
+    <App>
+        <AuthLayout>
+            <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-            {{ status }}
-        </div>
+            <SignIn :canResetPassword="props.canResetPassword" :status="props.status" :submit="submit" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+            <!-- <div v-if="status" class="mb-4 small text-success">
+                {{ status }}
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <form @submit.prevent="submit">
+                <div class="mb-3">
+                    <InputLabel for="email" value="Email" />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                    <TextInput
+                        id="email"
+                        type="email"
+                        class="form-control"
+                        v-model="form.email"
+                        required
+                        autofocus
+                        autocomplete="username"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                    <InputError class="mt-2" :message="form.errors.email" />
+                </div>
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
+                <div class="mb-3">
+                    <InputLabel for="password" value="Password" />
+
+                    <TextInput
+                        id="password"
+                        type="password"
+                        class="form-control"
+                        v-model="form.password"
+                        required
+                        autocomplete="current-password"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
+
+                <div class="mb-3 form-check">
+                    <label class="form-check-label d-flex align-items-center">
+                        <Checkbox name="remember" v-model:checked="form.remember" />
+                        <span class="ms-2 text-muted">Remember me</span>
+                    </label>
+                </div>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="text-muted text-decoration-underline me-3"
                     >
-                </label>
-            </div>
+                        Forgot your password?
+                    </Link>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+                    <PrimaryButton
+                        class="btn btn-primary"
+                        :class="{ 'opacity-50': form.processing }"
+                        :disabled="form.processing"
+                    >
+                        Log in
+                    </PrimaryButton>
+                </div>
+            </form> -->
+        </AuthLayout>
+    </App>
 </template>
+
+<style scoped>
+.opacity-50 {
+    opacity: 0.5;
+}
+
+.text-success {
+    color: #28a745; /* Bootstrap success color */
+}
+
+.text-muted {
+    color: #6c757d; /* Bootstrap muted color */
+}
+
+.form-check-label {
+    display: flex;
+    align-items: center;
+}
+
+.ms-2 {
+    margin-left: 0.5rem; /* Custom spacing for margin left */
+}
+.mt-2 {
+    margin-top: 0.5rem; /* Custom spacing for margin top */
+}
+.mb-3 {
+    margin-bottom: 1rem; /* Bootstrap standard margin bottom */
+}
+</style>

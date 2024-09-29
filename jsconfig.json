@@ -2,8 +2,9 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["resources/js/*"],
-            "ziggy-js": ["./vendor/tightenco/ziggy"]
+            "@/*": ["/resources/ts/src/*"],
+            "~/*": ["/node_modules/*"],
+            "@metronic": ["/resources/metronic/*"],
         }
     },
     "exclude": ["node_modules", "public"]
